@@ -1,13 +1,14 @@
 from loja.produto import Produto
 from loja.calculos import total_carrinho, frete
-
+from loja.promocao import SemPromocao
 class CarrinhoFinalizadoError(Exception):
     pass
 
 class Carrinho:
-    def __init__(self):
+    def __init__(self, promocao=None):
         self._itens = []
         self._finalizado = False
+        self.promocao = promocao or SemPromocao()
 
     def adicionar(self, produto, quantidade=1):
         if self._finalizado:
@@ -32,7 +33,8 @@ class Carrinho:
 
     @property
     def total(self):
-        return self.subtotal + frete(self.subtotal)
+        com_desconto = self.promocao.aplicar(self.subtotal)
+        return com_desconto + frete(com_desconto)
 
     def finalizar(self):
         if not self._itens:
