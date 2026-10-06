@@ -1,6 +1,7 @@
 from loja.produto import Produto
 from loja.calculos import total_carrinho, frete
 from loja.promocao import SemPromocao
+from loja.promocao import SemPromocao, Promocao
 class CarrinhoFinalizadoError(Exception):
     pass
 
@@ -8,6 +9,11 @@ class Carrinho:
     def __init__(self, promocao=None):
         self._itens = []
         self._finalizado = False
+        
+        # Validação do contrato:
+        if promocao is not None and not isinstance(promocao, Promocao):
+            raise TypeError("A promoção deve seguir o contrato Promocao")
+            
         self.promocao = promocao or SemPromocao()
 
     def adicionar(self, produto, quantidade=1):
