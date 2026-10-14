@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from loja.produto import Calca, Camiseta, Produto
 from loja.carrinho import Carrinho
 from loja.promocao import Percentual
@@ -16,7 +16,7 @@ CATALOGO = {
 # Modelo de dados para receber os pedidos
 class ItemPedido(BaseModel):
     produto_id: int
-    quantidade: int
+    quantidade: int = Field(gt=0)
 
 # Criação do carrinho
 def novo_carrinho():
