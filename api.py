@@ -61,3 +61,17 @@ def adicionar_item(item: ItemPedido):
         "quantidade": item.quantidade,
         "pecas_no_carrinho": carrinho.quantidade_de_pecas,
     }
+# Rota para ver o total do carrinho
+@app.get("/carrinho/total")
+def total_do_carrinho():
+    return {
+        "pecas": carrinho.quantidade_de_pecas,
+        "subtotal": round(carrinho.subtotal, 2),
+        "total": round(carrinho.total, 2),
+    }
+
+# Rota para limpar o carrinho
+@app.delete("/carrinho", status_code=204)
+def esvaziar_carrinho():
+    global carrinho
+    carrinho = novo_carrinho()
